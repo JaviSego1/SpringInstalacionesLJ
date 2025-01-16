@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -55,8 +56,12 @@ public class ServiInstalacion {
         
         Optional<Instalacion> oInstalacion = repoInstalacion.findById(id);
         if (oInstalacion.isPresent()) {
-            repoInstalacion.delete(oInstalacion.get());
-            return ResponseEntity.ok().body(oInstalacion.get());
+            try {
+                repoInstalacion.delete(oInstalacion.get());
+                return ResponseEntity.ok().body(oInstalacion.get());
+            } catch (Exception e){
+                return ResponseEntity.status(HttpStatus.CONFLICT).build();
+            }
         } else {
             return ResponseEntity.notFound().build();
         }

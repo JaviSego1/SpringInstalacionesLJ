@@ -45,7 +45,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/instalacion/**","/api/instalacion/*/**").permitAll()
                         .requestMatchers("/api/horario/**","/api/horario/*/**").permitAll()
                         .requestMatchers("/api/auth/**", "/api/auth/*/**").permitAll()
-                        .requestMatchers("/api/admin/**").hasAuthority("ADMIN")
+                        .requestMatchers("/api/admin/**").hasAuthority("ROLE_ADMIN")
                         .requestMatchers(
                             "/api/reservar/**", "/api/reservar/*/**",
                             "/api/mis-reservas/**", "/api/mis-reservas/*/**").authenticated())

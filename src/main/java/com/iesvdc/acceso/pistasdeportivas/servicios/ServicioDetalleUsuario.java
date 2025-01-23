@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.iesvdc.acceso.pistasdeportivas.modelos.Usuario;
 import com.iesvdc.acceso.pistasdeportivas.repos.RepoUsuario;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -25,7 +26,7 @@ public class ServicioDetalleUsuario implements UserDetailsService {
                 return User.builder()
                         .username(lu.get(0).getUsername())
                         .password(lu.get(0).getPassword())
-                        .roles(lu.get(0).getTipo().toString())
+                        .roles(lu.get(0).getTipo().name())
                         .build();
         } else {
             throw new UsernameNotFoundException("User not found");

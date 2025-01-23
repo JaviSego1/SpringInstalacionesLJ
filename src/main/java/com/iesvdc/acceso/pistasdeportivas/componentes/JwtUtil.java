@@ -14,7 +14,7 @@ import java.util.function.Function;
 @Component
 public class JwtUtil {
 
-    private static final String SECRET_KEY = "mi_clave_super_secreta_que_nadie_va_a_adivinar_jamas";
+    private static final String SECRET_KEY = "miClaveSuperSecretaQueNadieVaAAdivinarJamas";
     private static final long EXPIRATION_TIME = 1000 * 60 * 60 * 10; // 10 horas
 
     public String extractUsername(String token) {

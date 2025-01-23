@@ -4,52 +4,32 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import com.iesvdc.acceso.pistasdeportivas.modelos.Usuario;
+import com.iesvdc.acceso.pistasdeportivas.repos.RepoUsuario;
+
+import java.util.List;
 
 @Service
 public class ServicioDetalleUsuario implements UserDetailsService {
 
     @Autowired
-    private DataSource dataSource;
+    private RepoUsuario repoUsuario;
     
-
     @Override
-    public org.springframework.security.core.userdetails.UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        try (Connection conn = dataSource.getConnection();
-             PreparedStatement stmt = conn.prepareStatement("SELECT username, password, enabled FROM usuario WHERE username = ?")) {
-            stmt.setString(1, username);
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        List<Usuario> lu = repoUsuario.findByUsername(username);
+        if (lu.size()>0) {
                 return User.builder()
-                        .username(rs.getString("username"))
-                        .password(rs.getString("password"))
-                        .roles(getUserRole(username))
+                        .username(lu.get(0).getUsername())
+                        .password(lu.get(0).getPassword())
+                        .roles(lu.get(0).getTipo().toString())
                         .build();
-            } else {
-                throw new UsernameNotFoundException("User not found");
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        } else {
+            throw new UsernameNotFoundException("User not found");
+        }        
     }
-
-    private String getUserRole(String username) {
-        try (Connection conn = dataSource.getConnection();
-             PreparedStatement stmt = conn.prepareStatement("SELECT tipo as 'ROLE' FROM usuario WHERE username = ?")) {
-            stmt.setString(1, username);
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                return rs.getString("tipo");
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return "USER";
-    }
+    
 }

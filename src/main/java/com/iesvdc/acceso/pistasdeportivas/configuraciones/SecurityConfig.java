@@ -36,20 +36,17 @@ public class SecurityConfig {
     private JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Autowired
-    private DataSource dataSource;
-
-    @Autowired
-    private ServicioDetalleUsuario customUserDetailsService;
+    private DataSource dataSource;    
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/instalacion/**","/api/instalacion/*/**").permitAll()
+                        .requestMatchers("/api/horario/**","/api/horario/*/**").permitAll()
                         .requestMatchers("/api/auth/**", "/api/auth/*/**").permitAll()
                         .requestMatchers("/api/admin/**").hasAuthority("ADMIN")
-                        .requestMatchers(                            
-                            "/api/horario/**", "/api/horario/*/**",
+                        .requestMatchers(
                             "/api/reservar/**", "/api/reservar/*/**",
                             "/api/mis-reservas/**", "/api/mis-reservas/*/**").authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -57,15 +54,7 @@ public class SecurityConfig {
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
-    }
-
-    @Bean
-    public AuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setUserDetailsService(customUserDetailsService);
-        provider.setPasswordEncoder(passwordEncoder());
-        return provider;
-    }
+    }    
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
@@ -75,39 +64,15 @@ public class SecurityConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return username -> {
-            try (Connection conn = dataSource.getConnection();
-                    PreparedStatement stmt = conn
-                            .prepareStatement("SELECT username, password, enabled FROM usuario WHERE username = ?")) {
-                stmt.setString(1, username);
-                ResultSet rs = stmt.executeQuery();
-                if (rs.next()) {
-                    return User.builder()
-                            .username(rs.getString("username"))
-                            .password(rs.getString("password"))
-                            .roles(getUserRole(username))
-                            .build();
-                } else {
-                    throw new UsernameNotFoundException("User not found");
-                }
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        };
+        return new ServicioDetalleUsuario();
     }
 
-    private String getUserRole(String username) {
-        try (Connection conn = dataSource.getConnection();
-                PreparedStatement stmt = conn.prepareStatement("SELECT tipo FROM usuario WHERE username = ?")) {
-            stmt.setString(1, username);
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                return rs.getString("tipo");
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return "USER";
+    @Bean
+    public AuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setUserDetailsService(userDetailsService());
+        provider.setPasswordEncoder(passwordEncoder());
+        return provider;
     }
 
     @Bean

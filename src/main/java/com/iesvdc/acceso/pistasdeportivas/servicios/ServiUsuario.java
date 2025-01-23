@@ -24,8 +24,10 @@ public class ServiUsuario {
     }
 
     public Usuario save(Usuario usuario) {
+        // usuario.setPassword(new BCryptPasswordEncoder().encode(usuario.getPassword()));
+        // lo hace Spring por nosotros
         return repoUsuario.save(usuario);
-    }
+    }    
 
     public void delete(Usuario usuario) {
         repoUsuario.delete(usuario);

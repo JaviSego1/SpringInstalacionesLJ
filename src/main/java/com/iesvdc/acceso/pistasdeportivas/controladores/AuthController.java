@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.iesvdc.acceso.pistasdeportivas.componentes.JwtUtil;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController
@@ -37,13 +36,13 @@ public class AuthController {
     }
 
     @GetMapping("/hello")
-    public ResponseEntity<String> getHello(@RequestParam String param) {
+    public ResponseEntity<String> getHello() {
         
         return ResponseEntity.ok(new String("hello"));
     }
 
     @GetMapping("/test")
-    public ResponseEntity<String> getTest(@RequestParam String param) {
+    public ResponseEntity<String> getTest() {
         
         return ResponseEntity.ok(new String("test"));
     }

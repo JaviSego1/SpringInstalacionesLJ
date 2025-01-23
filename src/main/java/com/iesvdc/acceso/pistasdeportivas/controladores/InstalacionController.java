@@ -29,5 +29,11 @@ public class InstalacionController {
         return oInstalacion.map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
+
+    @GetMapping("/hello")
+    public ResponseEntity<String> getHello() {
+        
+        return ResponseEntity.ok(new String("hello"));
+    }
     
 }

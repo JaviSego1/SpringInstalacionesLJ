@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import com.iesvdc.acceso.pistasdeportivas.modelos.Usuario;
 import com.iesvdc.acceso.pistasdeportivas.repos.RepoUsuario;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -20,7 +19,8 @@ public class ServicioDetalleUsuario implements UserDetailsService {
     private RepoUsuario repoUsuario;
     
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) 
+      throws UsernameNotFoundException {
         List<Usuario> lu = repoUsuario.findByUsername(username);
         if (lu.size()>0) {
                 return User.builder()

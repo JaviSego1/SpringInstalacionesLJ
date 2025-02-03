@@ -15,7 +15,7 @@ import com.iesvdc.acceso.pistasdeportivas.servicios.ServicioDetalleUsuario;
 
 import org.springframework.web.bind.annotation.GetMapping;
 
-
+// @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -30,7 +30,8 @@ public class AuthController {
     private JwtUtil jwtUtil;
 
     @PostMapping("/login")
-    public ResponseEntity<?> authenticate(@RequestBody AuthRequest request) {
+    public ResponseEntity<?> authenticate(
+        @RequestBody AuthRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
 
@@ -43,12 +44,6 @@ public class AuthController {
     public ResponseEntity<String> getHello() {
         
         return ResponseEntity.ok(new String("hello"));
-    }
-
-    @GetMapping("/test")
-    public ResponseEntity<String> getTest() {
-        
-        return ResponseEntity.ok(new String("test"));
     }
     
 }

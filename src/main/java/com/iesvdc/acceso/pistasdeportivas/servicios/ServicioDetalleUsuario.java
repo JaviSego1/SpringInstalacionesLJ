@@ -26,6 +26,7 @@ public class ServicioDetalleUsuario implements UserDetailsService {
                 return User.builder()
                         .username(lu.get(0).getUsername())
                         .password(lu.get(0).getPassword())
+                        .disabled(!lu.get(0).isEnabled())
                         .roles(lu.get(0).getTipo().name())
                         .build();
         } else {

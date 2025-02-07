@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.iesvdc.acceso.pistasdeportivas.modelos.Usuario;
@@ -14,6 +16,12 @@ public class ServiUsuario {
 
     @Autowired
     private RepoUsuario repoUsuario;
+
+    public Usuario getLoggedUser(){
+        Authentication authentication =
+            SecurityContextHolder.getContext().getAuthentication();
+        return repoUsuario.findByUsername(authentication.getName()).get(0);
+    }
 
     public List<Usuario> findAll() {
         return repoUsuario.findAll();

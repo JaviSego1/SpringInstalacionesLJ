@@ -2,7 +2,15 @@
 
 **Gestión de instalaciones deportivas con una API Spring REST y React.**
 
+## Diseño de la aplicación
 
+En este enlace puedes [ver cómo hemos diseñado la aplicación](https://youtu.be/LaFSrDjFm1A).
+
+En este enlace puedes ver el [front-end](https://gitlab.iesvirgendelcarmen.com/juangu/adt06-proyectoclasepistasdeportivas-front-react).
+
+## Explicación JWT y UserDetails
+
+TO-DO: Explicar
 
 ## Documentación del Servicio `ServiInstalacion`
 

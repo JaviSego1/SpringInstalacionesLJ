@@ -38,12 +38,11 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/instalacion/**","/api/instalacion/*/**").authenticated()
-                        .requestMatchers("/api/horario/**","/api/horario/*/**").authenticated()
+                        .requestMatchers("/api/horario/**","/api/horario/*/**", "/api/usuario").authenticated()
+                        .requestMatchers("/api/reservar/**", "/api/reservar/*/**",
+                            "/api/mis-reservas/**", "/api/mis-reservas/*/**").authenticated()
                         .requestMatchers("/api/auth/**", "/api/auth/*/**").permitAll()
-                        .requestMatchers("/api/admin/**").hasAuthority("ROLE_ADMIN")
-                        .requestMatchers(
-                            "/api/reservar/**", "/api/reservar/*/**",
-                            "/api/mis-reservas/**", "/api/mis-reservas/*/**").authenticated())
+                        .requestMatchers("/api/admin/**").hasAuthority("ROLE_ADMIN"))                        
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider()) 
                 .cors(Customizer.withDefaults())

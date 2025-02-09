@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 
 @RestController
-@RequestMapping("/mis-reservas")
+@RequestMapping("/api/mis-reservas")
 public class ReservaController {
 
     @Autowired

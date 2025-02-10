@@ -1,6 +1,7 @@
 package com.iesvdc.acceso.pistasdeportivas.servicios;
 
 import com.iesvdc.acceso.pistasdeportivas.modelos.Horario;
+import com.iesvdc.acceso.pistasdeportivas.modelos.Instalacion;
 import com.iesvdc.acceso.pistasdeportivas.repos.RepoHorario;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,5 +39,9 @@ public class ServiHorario {
             existing.setHoraFin(horario.getHoraFin());
             return repoHorario.save(existing);
         });
+    }
+
+    public List<Horario> findByInstalacion(Instalacion instalacion){
+        return repoHorario.findByInstalacion(instalacion);
     }
 }

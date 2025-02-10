@@ -16,8 +16,6 @@ public class ServiMisReservas {
     @Autowired
     private RepoReserva repoReserva;
 
-    //@Autowired
-    // private ServiLoggedUser serviLoggedUser;
     @Autowired
     private ServiUsuario serviUsuario;
 

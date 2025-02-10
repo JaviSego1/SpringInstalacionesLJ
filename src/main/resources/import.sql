@@ -1,8 +1,8 @@
 
 
-INSERT INTO usuario (id, username, password, email, enabled, tipo) VALUES(2,	'pepe',	'$2a$10$zlD33q.JAxrRPsUGYGY7tedH/dQUn2MmlxQzjO7Y.oqK6rOjJdueq',	'pepe@gmail.com', 1, 'ADMIN');
+INSERT INTO usuario (id, username, password, email, enabled, tipo) VALUES(2,	'pepe',	'$2a$10$zlD33q.JAxrRPsUGYGY7tedH/dQUn2MmlxQzjO7Y.oqK6rOjJdueq',	'pepe@gmail.com', 1, 'OPERARIO');
 INSERT INTO usuario (id, username, password, email, enabled, tipo) VALUES(5,	'admin',	'$2a$10$krlxeZI8Xm.n1fNz7v81Y.yzsHtoMoCnDCsStEAPeGkE9BUOBkwn2',	'admin@correo.com', 1, 'ADMIN');
-INSERT INTO usuario (id, username, password, email, enabled, tipo) VALUES(7,	'obijuan',	'$2a$10$.EJQbCFZtHW1pavBGmMkw.VxOn2or6AL2oPP.8RVvCSqXQA/zwUom',	'darkside@starwars.com', 1, 'ADMIN');
+INSERT INTO usuario (id, username, password, email, enabled, tipo) VALUES(7,	'obijuan',	'$2a$10$.EJQbCFZtHW1pavBGmMkw.VxOn2or6AL2oPP.8RVvCSqXQA/zwUom',	'darkside@starwars.com', 1, 'USUARIO');
 INSERT INTO usuario (id, username, password, email, enabled, tipo) VALUES(13,	'gerente',	'$2a$10$hWkDEd0V0QgmiffgPcSkoe1.OMq5ew.wl7OFBMqii5XkfxtIwzZ92',	'gerencia@vdc.com', 1, 'ADMIN');
 
 -- INSERT INTO usuario_rol (authority, user_username) VALUES ('ADMIN', 'obijuan');
@@ -139,6 +139,9 @@ INSERT INTO reserva (id, usuario_id, horario_id, fecha) VALUES (2,	2,	130,	'2019
 INSERT INTO reserva (id, usuario_id, horario_id, fecha) VALUES (4,	7,	120,	'2019-11-11');
 INSERT INTO reserva (id, usuario_id, horario_id, fecha) VALUES (5,	7,	130,	'2019-11-21');
 
+INSERT INTO reserva (id, usuario_id, horario_id, fecha) VALUES (6,	5,	130,	'2025-02-11');
+INSERT INTO reserva (id, usuario_id, horario_id, fecha) VALUES (7,	5,	131,	'2025-02-12');
+INSERT INTO reserva (id, usuario_id, horario_id, fecha) VALUES (8,	5,	132,	'2025-02-13');
 
 
 -- INSERT INTO `usuario_rol` (`authority`, `user_id`) VALUES ('Admin', '5');

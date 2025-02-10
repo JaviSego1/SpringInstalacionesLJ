@@ -170,3 +170,21 @@ Este servicio RESTful en **Spring Boot** permite gestionar recursos relacionados
 
 
 
+
+
+
+
+## Documentación del Servicio `mis-reservas`
+
+Este servicio RESTful en **Spring Boot** permite gestionar recursos relacionados con las instalaciones deportivas a través de operaciones CRUD. 
+
+### Endpoints
+
+| Método HTTP | Endpoint                  | Descripción                                                                                             | Ejemplo de Respuesta |
+|-------------|---------------------------|---------------------------------------------------------------------------------------------------------|-----------------------|
+| `GET`       | `/api/mis-reservas`        | Obtiene una lista de reservas de ese usuario (el que hace login).                                    | Lista de JSON         |
+| `GET`       | `/api/mis-reservas/{id}`   | Obtiene el detalle de una de mis reservas. Si no existe o es de otro usuario, retorna un error `404 Not Found`.           | Objeto JSON o `404`   |
+| `POST`      | `/api/mis-reservas`        | Crea una nueva reserva para una instalación deportiva a nombre del usuario que hizo login. Retorna el objeto creado y la URI en el encabezado `Location`.   | Objeto JSON           |
+| `PUT`       | `/api/mis-reservas/{id}`   | Actualiza una reserva específica por su ID. Retorna el objeto actualizado o un error `404 Not Found` si no existe. | Objeto JSON o `404` |
+| `DELETE`    | `/api/mis-reservas/{id}`   | Elimina una reserva específica por su ID. Retorna el objeto eliminado o un error `404 Not Found`.  | Objeto JSON o `404`   |
+| `GET`       | `/api/mis-reservas/horario/instalacion/{id}/fecha/{fecha}`        | Obtiene una lista de horarios disponibles de una instalacion en una fecha. | Lista de JSON         |

@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -72,17 +73,14 @@ public class ReservaController {
     @GetMapping("/horario/instalacion/{id}/fecha/{fecha}")
     public List<Horario> horariosPorInstalacionFecha(
         @PathVariable long id,
-        @PathVariable LocalDate fecha) {    
-        // TO-DO
-        /*
-         * Hacer un método que me diga para una fecha qué
-         * horarios están sin reservas para una instalación
-         */
+        @PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fecha) {
+        
         Optional<Instalacion> oInstalacion = serviInstalacion.findById(id);
         
-        if (oInstalacion.isPresent())
-            return serviHorario.findByInstalacion(oInstalacion.get());
-        else 
-            return new ArrayList<Horario>();
+        if (oInstalacion.isPresent()) {
+            return serviHorario.getHorariosDisponibles(oInstalacion.get(), fecha);
+        } else {
+            return new ArrayList<>();
+        }
     }
 }

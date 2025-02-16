@@ -13,9 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.iesvdc.acceso.pistasdeportivas.componentes.JwtUtil;
 import com.iesvdc.acceso.pistasdeportivas.servicios.ServicioDetalleUsuario;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 
-// @CrossOrigin(origins = "*", allowedHeaders = "*")
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {

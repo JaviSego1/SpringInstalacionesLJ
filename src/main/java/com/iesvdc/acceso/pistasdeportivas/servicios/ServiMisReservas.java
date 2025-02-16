@@ -27,7 +27,9 @@ public class ServiMisReservas {
      * @return lista de reservas realizadas por el usuario
      */
     public List<Reserva> findReservasByUsuario() {
-        return repoReserva.findByUsuario(serviUsuario.getLoggedUser());
+        // Esto debería garantizar que el usuario que está haciendo la petición sea el mismo que el que hace login
+        Usuario uLogged = serviUsuario.getLoggedUser();
+        return repoReserva.findByUsuario(uLogged);  // Verifica que esta función esté bien implementada
     }
         
     /**
@@ -40,23 +42,23 @@ public class ServiMisReservas {
      * @throws Exception 
      */
     public Reserva saveReserva(Reserva reserva) throws Exception {
-        Usuario uLogged = serviUsuario.getLoggedUser();
-        if (reserva.getId()!=null) {
+        Usuario uLogged = serviUsuario.getLoggedUser();  // Asegúrate de que esto esté funcionando correctamente
+        if (reserva.getId() != null) {
             Optional<Reserva> oReserva = repoReserva.findById(reserva.getId());
             if (oReserva.isPresent()) {
                 if (!oReserva.get().getUsuario().equals(uLogged)) {
-                    throw new Exception("Reserva a nombre de otra persona");    
+                    throw new Exception("Reserva a nombre de otra persona");
                 }
             } else {
                 throw new Exception("Reserva inexistente");
             }
         } else {
-            // crear una nueva reserva, con el usuario que hizo login
+            // Crear una nueva reserva
             reserva.setUsuario(uLogged);
         }
-        
         return repoReserva.save(reserva);
     }
+    
 
     /**
      * Elimina una reserva por su identificador. si el usuario no coincide 
@@ -66,13 +68,14 @@ public class ServiMisReservas {
      */
     public Optional<Reserva> deleteReserva(Long id) {
         Optional<Reserva> reserva = repoReserva.findById(id);
-        if (reserva.isPresent())
-            if (reserva.get().getUsuario().equals(serviUsuario.getLoggedUser())){
-                repoReserva.deleteById(id);                
+        if (reserva.isPresent()) {
+            if (reserva.get().getUsuario().equals(serviUsuario.getLoggedUser())) {
+                repoReserva.deleteById(id);
             } else {
-                // si el usuario no coincide lo tratamos como si no existe en la BBDD
-                return Optional.empty(); 
+                return Optional.empty(); // Si el usuario no coincide, no borra la reserva
             }
+        }
         return reserva;
     }
+    
 }

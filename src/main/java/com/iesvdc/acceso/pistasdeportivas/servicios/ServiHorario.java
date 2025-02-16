@@ -3,10 +3,12 @@ package com.iesvdc.acceso.pistasdeportivas.servicios;
 import com.iesvdc.acceso.pistasdeportivas.modelos.Horario;
 import com.iesvdc.acceso.pistasdeportivas.modelos.Instalacion;
 import com.iesvdc.acceso.pistasdeportivas.repos.RepoHorario;
+import com.iesvdc.acceso.pistasdeportivas.repos.RepoReserva;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,6 +17,15 @@ public class ServiHorario {
 
     @Autowired
     private RepoHorario repoHorario;
+
+    @Autowired
+    private RepoReserva repoReserva;
+
+    // Otros métodos existentes...
+
+    public List<Horario> getHorariosDisponibles(Instalacion instalacion, LocalDate fecha) {
+        return repoReserva.findHorarioByInstalacionFree(instalacion, fecha);
+    }
 
     public List<Horario> findAll() {
         return repoHorario.findAll();

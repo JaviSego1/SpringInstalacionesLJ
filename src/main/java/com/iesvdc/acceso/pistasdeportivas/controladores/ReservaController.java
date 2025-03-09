@@ -71,16 +71,22 @@ public class ReservaController {
     }
     
     @GetMapping("/horario/instalacion/{id}/fecha/{fecha}")
-    public List<Horario> horariosPorInstalacionFecha(
+    public ResponseEntity<List<Horario>> horariosPorInstalacionFecha(
         @PathVariable long id,
         @PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fecha) {
         
-        Optional<Instalacion> oInstalacion = serviInstalacion.findById(id);
-        
-        if (oInstalacion.isPresent()) {
-            return serviHorario.getHorariosDisponibles(oInstalacion.get(), fecha);
-        } else {
-            return new ArrayList<>();
+            Optional<Instalacion> oInstalacion = serviInstalacion.findById(id);
+
+            Instalacion insta;
+    
+            if(oInstalacion.isPresent()){
+                insta = serviInstalacion.findById(id).get();
+    
+            }else{
+                return ResponseEntity.notFound().build();
+            }
+            List<Horario> horarios = serviMisReservas.getHorarios(insta, fecha);
+            return ResponseEntity.ok(horarios);
         }
-    }
+    
 }

@@ -1,12 +1,15 @@
 package com.iesvdc.acceso.pistasdeportivas.servicios;
 
 
+import com.iesvdc.acceso.pistasdeportivas.modelos.Horario;
+import com.iesvdc.acceso.pistasdeportivas.modelos.Instalacion;
 import com.iesvdc.acceso.pistasdeportivas.modelos.Reserva;
 import com.iesvdc.acceso.pistasdeportivas.modelos.Usuario;
 import com.iesvdc.acceso.pistasdeportivas.repos.RepoReserva;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -76,6 +79,10 @@ public class ServiMisReservas {
             }
         }
         return reserva;
+    }
+
+    public List<Horario> getHorarios(Instalacion instalacion,LocalDate fecha){
+        return repoReserva.findHorarioByInstalacionFree(instalacion,fecha);
     }
     
 }

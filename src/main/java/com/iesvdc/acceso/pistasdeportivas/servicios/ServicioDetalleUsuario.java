@@ -27,7 +27,7 @@ public class ServicioDetalleUsuario implements UserDetailsService {
                         .username(lu.get(0).getUsername())
                         .password(lu.get(0).getPassword())
                         .disabled(!lu.get(0).isEnabled())
-                        .roles(lu.get(0).getTipo().name())
+                        .roles(lu.get(0).getTipo().name().replace("ROLE_", ""))
                         .build();
         } else {
             throw new UsernameNotFoundException("User not found");

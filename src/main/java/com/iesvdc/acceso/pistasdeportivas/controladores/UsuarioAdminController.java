@@ -16,48 +16,51 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/admin/usuario")
-@PreAuthorize("hasRole('ADMIN')")
 public class UsuarioAdminController {
 
     @Autowired
-    private ServiUsuario serviUsuario;
+    private ServiUsuario usuariosService;
 
-    // Devuelve todos los usuarios
     @GetMapping
-    public ResponseEntity<List<Usuario>> getAllUsers() {
-        return ResponseEntity.ok(serviUsuario.findAll());
-    }
-    // Devuelve un usuario por su id
-    @GetMapping("/{id}")
-    public ResponseEntity<Usuario> getUserById(@PathVariable @NonNull Long id) {
-        Optional<Usuario> usuario = serviUsuario.findById(id);
-        return usuario.map(ResponseEntity::ok)
-        .orElse(ResponseEntity.notFound().build());
-    }
-    // Crea un usuario
-    @PostMapping
-    public ResponseEntity<Usuario> createUser(@RequestBody Usuario usuario) throws URISyntaxException {
-        Usuario created = serviUsuario.save(usuario);
-        return ResponseEntity.created(new URI(""+created.getId()))
-                    .body(created);
+    public List<Usuario> findAll() {
+        return usuariosService.findAll();
     }
 
-    // Actualiza un usuario por su id
-    @PutMapping("/{id}")
-    public ResponseEntity<Usuario> updateUser(@PathVariable Long id, @RequestBody Usuario usuario) {
-        Optional<Usuario> updated = serviUsuario.update(id, usuario);
-        return updated.map(ResponseEntity::ok)
-        .orElse(ResponseEntity.notFound().build());
+    @GetMapping("/{id}")
+    public ResponseEntity<Usuario> findById(@PathVariable Long id) {
+        Optional<Usuario> usuario = usuariosService.findById(id);
+        return usuario.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
-    // Borra un usuario por su id
+
+    @PostMapping
+    public ResponseEntity<Usuario> createUsuario(@RequestBody Usuario usuario) {
+        if (usuariosService.existsByUsername(usuario.getUsername())) {
+            return ResponseEntity.badRequest().body(null); 
+        }
+        if (usuariosService.existsByEmail(usuario.getEmail())) {
+            return ResponseEntity.badRequest().body(null); 
+        }
+        if (usuario.getPassword() == null || usuario.getPassword().isEmpty()) {
+            return ResponseEntity.badRequest().body(null); 
+        }
+        Usuario nuevoUsuario = usuariosService.save(usuario);
+        return ResponseEntity.ok(nuevoUsuario);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Usuario> updateUsuario(@PathVariable Long id, @RequestBody Usuario usuario) {
+        return usuariosService.update(id, usuario)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
-        Optional<Usuario> oUsuario = serviUsuario.findById(id);
-        if (oUsuario.isPresent()) {
-            serviUsuario.delete(oUsuario.get());
-            return ResponseEntity.ok().build();
-        } else {
+    public ResponseEntity<Void> deleteUsuario(@PathVariable Long id) {
+        if (!usuariosService.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
+
+        usuariosService.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 }

@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 
@@ -55,6 +56,18 @@ public class ReservaController {
         }        
     }
     
+    @PutMapping("/{id}")
+    public ResponseEntity<Reserva> update(@PathVariable Long id, @RequestBody Reserva reserva) {
+        try {
+            // Forzamos que el id de la reserva sea el del path para mayor consistencia
+            reserva.setId(id);
+            Reserva updatedReserva = serviMisReservas.saveReserva(reserva);
+            return ResponseEntity.ok(updatedReserva);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Reserva> delete(@PathVariable long id) {
         Optional<Reserva> oReserva;
